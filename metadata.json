@@ -1,0 +1,8 @@
+{
+  "name": "FMS Workspace",
+  "description": "Enterprise factory management system and production dashboard workspace.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
