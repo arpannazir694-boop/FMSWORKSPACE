@@ -1,0 +1,982 @@
+/* =============================================================================
+   FMS WORKSPACE — login.css
+   Seamless vintage typewriter desk layout matching reference design
+   ============================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Serif:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap');
+
+/* Royale Elegance — Luxury Display Serif Font */
+@font-face {
+  font-family: 'Royale Elegance';
+  src: url('royale-elegance.regular.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --gold: #c4902d;
+  --gold-brand: #dc9221;
+  --gold-light: #d7a33e;
+  --gold-dark: #4a2505;
+  --brown-deep: #422304;
+  --brown-rich: #4a2505;
+  --text-dark: #15110d;
+  --text-sub: #261f18;
+  --text-muted: #52463a;
+  --text-dim: #5c4f42;
+  --line-border: rgba(25, 20, 14, 0.72);
+  --line-focus: #542c08;
+  --error-red: #dc2626;
+  --font-brand: 'Royale Elegance', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-heading: 'Playfair Display', Georgia, 'Noto Serif', serif;
+  --font-serif: Georgia, 'Noto Serif', 'Playfair Display', 'Times New Roman', serif;
+  --font-google-sans: 'Google Sans', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background-color: #d6ccbe;
+  font-family: var(--font-serif);
+  color: var(--text-dark);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Full Background Setup — Pure natural desk photography, NO dark overlay     */
+/* -------------------------------------------------------------------------- */
+.login-stage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    url('login-bg.jpg'),
+    url('https://res.cloudinary.com/dnrgcigsj/image/upload/v1794396810/retrosupply-jLwVAUtLOAQ-unsplash_flsziw.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 20px 24px;
+}
+
+.login-stage::before {
+  display: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Main Content Container — Positioned cleanly below the typewriter           */
+/* -------------------------------------------------------------------------- */
+.login-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 720px;
+  min-width: 0;
+  margin: max(24.1vw, 35.5vh) auto 20px;
+  padding: 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Top Branding (Trio Group | FMS Workspace + Tagline)                        */
+/* -------------------------------------------------------------------------- */
+.brand-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: clamp(22px, 2.5vw, 36px);
+}
+
+.brand-logo-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(9px, 1.05vw, 17px);
+  white-space: nowrap;
+}
+
+.brand-trio-logo {
+  height: clamp(34px, 4.05vw, 58px);
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
+}
+
+.brand-divider {
+  display: inline-block;
+  width: clamp(1.5px, 0.16vw, 2.2px);
+  height: clamp(35px, 4.15vw, 60px);
+  background: linear-gradient(180deg, #e4a12a 0%, #c98114 100%);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.brand-title {
+  font-family: var(--font-brand);
+  font-size: clamp(31px, 3.72vw, 55px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.2px;
+  color: #fbd9aa;
+  margin: 0;
+  transform: translateY(-0.07em);
+  text-shadow: 1px 3px 7px rgba(24, 12, 3, 0.46), 0 1px 2px rgba(24, 12, 3, 0.28);
+}
+
+.brand-gold {
+  color: var(--brown-rich);
+  font-weight: 700;
+  -webkit-text-stroke: 0.026em var(--brown-rich);
+  text-shadow: 0.016em 0 0 var(--brown-rich), 1px 3px 7px rgba(24, 12, 3, 0.36), 0 1px 2px rgba(24, 12, 3, 0.22);
+  margin-right: 0.08em;
+}
+
+.brand-tagline {
+  margin-top: clamp(4px, 0.45vw, 7px);
+  font-family: var(--font-sans);
+  font-size: clamp(8.5px, 0.85vw, 12px);
+  font-weight: 600;
+  letter-spacing: clamp(1.2px, 0.16vw, 2.3px);
+  color: #191511;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Narrow Form Shell Centered Under Brand Header                              */
+/* -------------------------------------------------------------------------- */
+.form-shell {
+  width: 100%;
+  max-width: clamp(320px, 29.5vw, 450px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Alert Box                                                                  */
+/* -------------------------------------------------------------------------- */
+.login-alert {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  margin-bottom: 12px;
+  background: rgba(220, 38, 38, 0.12);
+  border-left: 3px solid var(--error-red);
+  color: var(--error-red);
+  font-family: var(--font-google-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.login-alert.visible {
+  display: flex;
+}
+
+.login-alert .material-icons-round {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Minimalist Underline Inputs — Seamless over wood planks                    */
+/* -------------------------------------------------------------------------- */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.25vw, 18px);
+  width: 100%;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.input-line-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: clamp(38px, 3.3vw, 48px);
+  padding: 4px 2px 3px;
+  background: transparent;
+  border: none;
+  border-bottom: 1.25px solid var(--line-border);
+  border-radius: 0;
+  box-shadow: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-line-wrap:focus-within {
+  border-bottom-color: var(--line-focus);
+  box-shadow: 0 1px 0 0 var(--line-focus);
+}
+
+.input-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(18px, 1.55vw, 22px);
+  height: clamp(18px, 1.55vw, 22px);
+  color: #211a14;
+  margin-right: clamp(10px, 0.95vw, 14px);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.input-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.input-line-wrap:focus-within .input-icon {
+  color: var(--gold-dark);
+}
+
+.line-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-dark);
+  font-family: var(--font-google-sans);
+  font-size: clamp(14px, 1.18vw, 17px);
+  font-weight: 400;
+  padding: 0;
+  height: 100%;
+}
+
+.line-input::placeholder {
+  color: #3d3228;
+  font-weight: 400;
+  opacity: 0.88;
+}
+
+.line-input:-webkit-autofill,
+.line-input:-webkit-autofill:hover,
+.line-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-dark) !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  transition: background-color 999999s ease-in-out 0s;
+}
+
+.pw-toggle {
+  background: none;
+  border: none;
+  color: #211a14;
+  cursor: pointer;
+  padding: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.pw-toggle:hover {
+  color: var(--gold-dark);
+}
+
+.pw-toggle svg {
+  width: clamp(18px, 1.55vw, 22px);
+  height: clamp(18px, 1.55vw, 22px);
+  display: block;
+}
+
+.pw-toggle .pw-eye-on {
+  display: none;
+}
+
+.pw-toggle.is-visible .pw-eye-off {
+  display: none;
+}
+
+.pw-toggle.is-visible .pw-eye-on {
+  display: block;
+}
+
+/* Error state */
+.field-group.has-error .input-line-wrap {
+  border-bottom-color: var(--error-red);
+  box-shadow: 0 1px 0 0 var(--error-red);
+}
+
+.field-error {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-google-sans);
+  font-size: 11.5px;
+  color: var(--error-red);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.field-group.has-error .field-error {
+  display: flex;
+}
+
+.field-error .material-icons-round {
+  font-size: 13px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Deep Brown Rectangle Sign In Button (L->R wipe to transparent on hover)    */
+/* -------------------------------------------------------------------------- */
+.btn-sign-in {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: clamp(44px, 3.6vw, 54px);
+  margin-top: clamp(8px, 0.9vw, 14px);
+  border: 1.5px solid #3d1e04;
+  border-radius: 0;
+  background: transparent;
+  color: #faf6ef;
+  font-family: var(--font-google-sans);
+  font-size: clamp(17px, 1.45vw, 21px);
+  font-weight: 500;
+  letter-spacing: 0.35px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(42, 20, 3, 0.24);
+  transition: color 0.34s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.34s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.34s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.15s ease;
+}
+
+.btn-sign-in::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(180deg, #542c08 0%, #3d1e04 100%);
+  border-radius: 0;
+  transform: scaleX(1);
+  transform-origin: left center;
+  transition: transform 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.btn-sign-in:hover:not(:disabled)::before,
+.btn-sign-in:focus-visible:not(:disabled)::before {
+  transform: scaleX(0);
+  transform-origin: right center;
+}
+
+.btn-sign-in:hover:not(:disabled),
+.btn-sign-in:focus-visible:not(:disabled) {
+  color: #2b1603;
+  border-color: #3d1e04;
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-sign-in.loading::before {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.btn-sign-in.loading {
+  color: #faf6ef;
+  box-shadow: 0 3px 10px rgba(42, 20, 3, 0.24);
+}
+
+.btn-sign-in:active:not(:disabled) {
+  transform: scale(0.995);
+}
+
+.btn-sign-in:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.btn-text {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.btn-spinner {
+  position: relative;
+  z-index: 1;
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(250, 246, 239, 0.28);
+  border-top-color: #faf6ef;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.btn-sign-in.loading .btn-spinner {
+  display: block;
+}
+
+.btn-sign-in.loading .btn-text {
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Options Row: Remember Me & Forgot Password                                 */
+/* -------------------------------------------------------------------------- */
+.options-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: clamp(0px, 0.2vw, 3px);
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.remember-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.remember-wrap input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.custom-check {
+  width: clamp(13px, 1.05vw, 16px);
+  height: clamp(13px, 1.05vw, 16px);
+  border: 1.15px solid rgba(36, 29, 22, 0.65);
+  border-radius: 2.5px;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.remember-wrap:hover .custom-check {
+  border-color: var(--gold-dark);
+}
+
+.remember-wrap input[type="checkbox"]:checked ~ .custom-check {
+  background: var(--brown-rich);
+  border-color: var(--brown-rich);
+}
+
+.remember-wrap input[type="checkbox"]:checked ~ .custom-check::after {
+  content: '';
+  width: 3.5px;
+  height: 7px;
+  border: solid #ffffff;
+  border-width: 0 1.8px 1.8px 0;
+  transform: rotate(45deg) translate(-0.5px, -0.5px);
+}
+
+.remember-label {
+  font-family: var(--font-google-sans);
+  font-size: clamp(12px, 1.0vw, 14.5px);
+  font-weight: 400;
+  color: #1a1510;
+}
+
+.forgot-pwd {
+  font-family: var(--font-google-sans);
+  font-size: clamp(12px, 1.0vw, 14.5px);
+  font-weight: 400;
+  color: #1a1510;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgot-pwd:hover {
+  color: var(--gold-dark);
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Bottom Motto: WORK SMARTER. TOGETHER.                                      */
+/* -------------------------------------------------------------------------- */
+.bottom-motto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(14px, 1.5vw, 22px);
+  user-select: none;
+  text-align: center;
+}
+
+.motto-text {
+  font-family: var(--font-google-sans);
+  font-size: clamp(11px, 0.96vw, 13.5px);
+  letter-spacing: 0.8px;
+  color: #18130e;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Success Overlay & Modal                                                    */
+/* -------------------------------------------------------------------------- */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 14, 12, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.success-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.success-icon-wrap {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), #edd7a6);
+  color: #110e0c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(226, 192, 132, 0.4);
+  animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.success-icon-wrap .material-icons-round {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.success-title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.success-sub {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: #c2b8ae;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.forgot-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 14, 12, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.forgot-modal.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.forgot-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: #171310;
+  border: 1px solid rgba(226, 192, 132, 0.35);
+  border-radius: 14px;
+  padding: 34px 30px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  text-align: center;
+}
+
+.forgot-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #9e9489;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  transition: color 0.2s ease;
+}
+
+.forgot-modal-close:hover {
+  color: #ffffff;
+}
+
+.forgot-modal-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 16px;
+  border-radius: 12px;
+  background: rgba(226, 192, 132, 0.15);
+  border: 1px solid rgba(226, 192, 132, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+}
+
+.forgot-modal-icon .material-icons-round {
+  font-size: 28px;
+}
+
+.forgot-modal-card h3 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.forgot-modal-card p {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: #b8aea3;
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.forgot-modal-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(10, 8, 7, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: #d1cbc4;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.forgot-modal-note .material-icons-round {
+  font-size: 16px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.forgot-modal-action {
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  border: none;
+  background: var(--gold);
+  color: #110e0c;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.forgot-modal-action:hover {
+  background: var(--gold-light);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Entrance Cascade Animation                                                 */
+/* -------------------------------------------------------------------------- */
+.login-stage {
+  animation: stageFadeIn 0.45s ease-out both;
+}
+
+@keyframes stageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.brand-section {
+  animation: dropFromAbove 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.05s;
+}
+
+#field-username {
+  animation: dropFromAbove 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.1s;
+}
+
+#field-password {
+  animation: dropFromAbove 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.15s;
+}
+
+.btn-sign-in {
+  animation: dropFromAbove 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.2s;
+}
+
+.options-row {
+  animation: dropFromAbove 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.25s;
+}
+
+.bottom-motto {
+  animation: dropFromAbove 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.3s;
+}
+
+@keyframes dropFromAbove {
+  0% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Compact Height Laptops (e.g. 1366x640 with browser chrome)                 */
+/* -------------------------------------------------------------------------- */
+@media (max-height: 720px) and (min-width: 901px) {
+  .login-stage {
+    padding-bottom: 10px;
+  }
+
+  .login-content {
+    margin: max(23.6vw, 34.5vh) auto 8px;
+  }
+
+  .brand-section {
+    margin-bottom: clamp(14px, 1.8vw, 22px);
+  }
+
+  .login-form {
+    gap: 9px;
+  }
+
+  .input-line-wrap {
+    height: 38px;
+  }
+
+  .btn-sign-in {
+    height: 44px;
+    margin-top: 6px;
+    font-size: 18.5px;
+  }
+
+  .bottom-motto {
+    margin-top: 10px;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Responsive Adaptations for Tablets                                         */
+/* -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .login-stage {
+    padding: 0 18px 28px;
+  }
+
+  .login-content {
+    margin: max(25vw, 37vh) auto 24px;
+  }
+
+  .form-shell {
+    max-width: 390px;
+  }
+
+  .brand-trio-logo {
+    height: clamp(32px, 5vw, 44px);
+  }
+
+  .brand-divider {
+    height: clamp(34px, 5.2vw, 46px);
+  }
+
+  .brand-title {
+    font-size: clamp(28px, 4.4vw, 38px);
+  }
+
+  .brand-tagline {
+    font-size: 9.5px;
+    letter-spacing: 1.5px;
+  }
+
+  .input-line-wrap {
+    height: 44px;
+  }
+
+  .line-input {
+    font-size: 15.5px;
+  }
+
+  .btn-sign-in {
+    height: 48px;
+    font-size: 18.5px;
+  }
+
+  .remember-label,
+  .forgot-pwd {
+    font-size: 13.5px;
+  }
+
+  .motto-text {
+    font-size: 12px;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Responsive Adaptations for Mobile Devices                                  */
+/* -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .login-stage {
+    padding: 0 16px 24px;
+  }
+
+  .login-content {
+    margin: 35.5vh auto 20px;
+    padding: 0;
+  }
+
+  .brand-logo-row {
+    gap: 8px;
+  }
+
+  .brand-trio-logo {
+    height: 28px;
+  }
+
+  .brand-divider {
+    height: 30px;
+    width: 1.5px;
+  }
+
+  .brand-title {
+    font-size: 24px;
+  }
+
+  .brand-tagline {
+    font-size: 8.5px;
+    letter-spacing: 1.2px;
+  }
+
+  .form-shell {
+    max-width: 345px;
+  }
+
+  .input-line-wrap {
+    height: 42px;
+  }
+
+  .line-input {
+    font-size: 15px;
+  }
+
+  .btn-sign-in {
+    height: 46px;
+    font-size: 17.5px;
+  }
+
+  .remember-label,
+  .forgot-pwd {
+    font-size: 13px;
+  }
+
+  .motto-text {
+    font-size: 11.5px;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand-logo-row {
+    gap: 6px;
+  }
+
+  .brand-trio-logo {
+    height: 24px;
+  }
+
+  .brand-divider {
+    height: 25px;
+  }
+
+  .brand-title {
+    font-size: 21px;
+  }
+
+  .brand-tagline {
+    font-size: 7.5px;
+    letter-spacing: 0.9px;
+  }
+}

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FMS Workspace — Sign In</title>
+  <link rel="icon" type="image/svg+xml" href="https://res.cloudinary.com/dnrgcigsj/image/upload/v1789365942/trio-dark-logo_ayyhkh.svg" />
+  <link rel="alternate icon" type="image/png" href="https://res.cloudinary.com/dnrgcigsj/image/upload/c_pad,w_64,h_64,f_png/v1789365942/trio-dark-logo_ayyhkh.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Noto+Serif:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <link rel="preload" href="royale-elegance.regular.ttf" as="font" type="font/ttf" crossorigin />
+  <!--
+    FOR GOOGLE APPS SCRIPT: Replace with <?!= include('login_style'); ?>
+    FOR STANDALONE USE: keep this tag as-is.
+  -->
+  <link rel="stylesheet" href="login.css" />
+  <script>
+    /* Immediate Session Guard: If already authenticated, redirect to main app immediately */
+    (function () {
+      try {
+        var isGAS = (typeof google !== 'undefined' && google.script && google.script.run) ||
+                    (window.location.hostname && window.location.hostname.indexOf('script.google.com') !== -1);
+        if (isGAS) return;
+        var SESSION_KEY = 'fms_user';
+        var stored = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY);
+        if (stored) {
+          if (document.documentElement) document.documentElement.style.display = 'none';
+          var mainUrl = 'index.html';
+          if (window.location.search && /(?:^|[?&])page=login(?:&|$)/.test(window.location.search)) {
+            mainUrl = window.location.pathname + '?page=app';
+          }
+          window.location.replace(mainUrl);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<!-- Success Overlay -->
+<div class="success-overlay" id="success-overlay">
+  <div class="success-icon-wrap">
+    <span class="material-icons-round">check</span>
+  </div>
+  <div class="success-title">Welcome Back</div>
+  <div class="success-sub">Authenticating FMS Workspace…</div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div class="forgot-modal" id="forgot-modal" aria-hidden="true">
+  <div class="forgot-modal-card" role="dialog" aria-modal="true" aria-labelledby="forgot-modal-title">
+    <button type="button" class="forgot-modal-close" id="forgot-modal-close" aria-label="Close">
+      <span class="material-icons-round">close</span>
+    </button>
+    <div class="forgot-modal-icon">
+      <span class="material-icons-round">lock_reset</span>
+    </div>
+    <h3 id="forgot-modal-title">Password Assistance</h3>
+    <p>For account security and credentials recovery, please contact your System Administrator directly.</p>
+    <div class="forgot-modal-note">
+      <span class="material-icons-round">verified_user</span>
+      <span>Admin identity verification required for corporate security compliance.</span>
+    </div>
+    <button type="button" class="forgot-modal-action" id="forgot-modal-action">Acknowledge &amp; Return</button>
+  </div>
+</div>
+
+<!-- Main Login Stage (Exact layout from user reference image) -->
+<div class="login-stage">
+  <div class="login-content">
+
+    <!-- Top Branding: Trio Group | FMS Workspace -->
+    <div class="brand-section">
+      <div class="brand-logo-row">
+        <img
+          src="trio-dark-logo.svg"
+          onerror="this.onerror=null;this.src='https://res.cloudinary.com/dnrgcigsj/image/upload/v1789365942/trio-dark-logo_ayyhkh.svg';"
+          alt="Trio Group"
+          class="brand-trio-logo"
+        />
+        <span class="brand-divider" aria-hidden="true"></span>
+        <h1 class="brand-title"><span class="brand-gold">FMS</span> Workspace</h1>
+      </div>
+      <div class="brand-tagline">PLAN &bull; TRACK &bull; COLLABORATE &bull; ACHIEVE</div>
+    </div>
+
+    <!-- Form Shell (Narrower centered column below brand header) -->
+    <div class="form-shell">
+
+      <!-- Error alert -->
+      <div class="login-alert" id="login-alert" role="alert">
+        <span class="material-icons-round">error_outline</span>
+        <span id="alert-msg">Invalid username or password. Please try again.</span>
+      </div>
+
+      <!-- Login Form -->
+      <form class="login-form" id="login-form" novalidate autocomplete="off">
+
+        <!-- Username -->
+        <div class="field-group" id="field-username">
+          <div class="input-line-wrap">
+            <span class="input-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4.5 20c0-3.6 3.35-6 7.5-6s7.5 2.4 7.5 6"></path>
+              </svg>
+            </span>
+            <input
+              type="text"
+              id="username"
+              class="line-input"
+              placeholder="Username"
+              autocomplete="username"
+              spellcheck="false"
+            />
+          </div>
+          <div class="field-error">
+            <span class="material-icons-round">error</span>
+            <span>Username is required.</span>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="field-group" id="field-password">
+          <div class="input-line-wrap">
+            <span class="input-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+                <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                <circle cx="12" cy="16" r="1" fill="currentColor"></circle>
+              </svg>
+            </span>
+            <input
+              type="password"
+              id="password"
+              class="line-input"
+              placeholder="Password"
+              autocomplete="current-password"
+            />
+            <button type="button" class="pw-toggle" id="pw-toggle" tabindex="-1" aria-label="Toggle password visibility">
+              <svg class="pw-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path>
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
+                <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="2" y1="2" x2="22" y2="22"></line>
+              </svg>
+              <svg class="pw-eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <div class="field-error">
+            <span class="material-icons-round">error</span>
+            <span>Password is required.</span>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-sign-in" id="login-btn">
+          <div class="btn-spinner"></div>
+          <span class="btn-text">Sign In</span>
+        </button>
+
+        <!-- Options: Remember Me & Forgot Password -->
+        <div class="options-row">
+          <label class="remember-wrap">
+            <input type="checkbox" id="remember-me" />
+            <span class="custom-check"></span>
+            <span class="remember-label">Remember me</span>
+          </label>
+          <a href="#" class="forgot-pwd" id="forgot-link">Forgot password?</a>
+        </div>
+
+      </form>
+
+      <!-- Bottom Motto -->
+      <div class="bottom-motto">
+        <span class="motto-text">WORK SMARTER. TOGETHER.</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!--
+  FOR GOOGLE APPS SCRIPT: Replace this script block with <?!= include('login_js'); ?>
+  FOR STANDALONE USE: keep as-is.
+-->
+<script>
+(function () {
+  'use strict';
+
+  var GAS_URL     = 'https://script.google.com/macros/s/AKfycbx99oNMmHYn-jum8NEtkUFqYmR3nV0reWfL1MYC7GDeRxQJu-BbKJq56KW1KcmUoCjRNA/exec';
+  var SESSION_KEY     = 'fms_user';
+  var ACCESS_KEY      = 'fms_access';     // JSON array of tab names this user is allowed to open
+  var KPI_ACCESS_KEY  = 'fms_kpi_access'; // JSON array of KPI-card ids this user is allowed to see (empty = no restriction)
+  var AI_ACCESS_KEY   = 'fms_ai_access';  // JSON array of AI-feature names this user is allowed to open (empty = no restriction)
+  var MAIN_PAGE   = 'index.html';
+
+  var form        = document.getElementById('login-form');
+  var usernameEl  = document.getElementById('username');
+  var passwordEl  = document.getElementById('password');
+  var loginBtn    = document.getElementById('login-btn');
+  var alertBox    = document.getElementById('login-alert');
+  var alertMsg    = document.getElementById('alert-msg');
+  var pwToggle    = document.getElementById('pw-toggle');
+  var successOvl  = document.getElementById('success-overlay');
+  var fieldUser   = document.getElementById('field-username');
+  var fieldPass   = document.getElementById('field-password');
+  var rememberMe  = document.getElementById('remember-me');
+  var forgotLink  = document.getElementById('forgot-link');
+  var forgotModal = document.getElementById('forgot-modal');
+  var forgotClose = document.getElementById('forgot-modal-close');
+  var forgotOk    = document.getElementById('forgot-modal-action');
+
+  function getMainUrl() {
+    var isGAS = (typeof google !== 'undefined' && google.script && google.script.run) ||
+                (window.location.hostname && window.location.hostname.indexOf('script.google.com') !== -1);
+    if (isGAS) {
+      return GAS_URL + '?page=app';
+    }
+    if (window.location.search && /(?:^|[?&])page=login(?:&|$)/.test(window.location.search)) {
+      return window.location.pathname + '?page=app';
+    }
+    return MAIN_PAGE;
+  }
+
+  function goToMainPage() {
+    window.location.replace(getMainUrl());
+  }
+
+  // Redirect if already logged in
+  try {
+    var stored = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY);
+    if (stored) { goToMainPage(); }
+  } catch (e) {}
+
+  // Password toggle
+  pwToggle.addEventListener('click', function () {
+    var show = passwordEl.type === 'password';
+    passwordEl.type = show ? 'text' : 'password';
+    pwToggle.classList.toggle('is-visible', show);
+  });
+
+  // Clear on input
+  usernameEl.addEventListener('input', function () { fieldUser.classList.remove('has-error'); hideAlert(); });
+  passwordEl.addEventListener('input', function () { fieldPass.classList.remove('has-error'); hideAlert(); });
+
+  function setForgotModal(open) {
+    if (!forgotModal) return;
+    forgotModal.classList.toggle('visible', open);
+    forgotModal.setAttribute('aria-hidden', open ? 'false' : 'true');
+    if (open && forgotOk) forgotOk.focus();
+  }
+
+  if (forgotLink) {
+    forgotLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      hideAlert();
+      setForgotModal(true);
+    });
+  }
+  [forgotClose, forgotOk].forEach(function (btn) {
+    if (!btn) return;
+    btn.addEventListener('click', function () { setForgotModal(false); });
+  });
+  if (forgotModal) {
+    forgotModal.addEventListener('click', function (e) {
+      if (e.target === forgotModal) setForgotModal(false);
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setForgotModal(false);
+  });
+
+  // ---------------------------------------------------------------------------
+  // IndexedDB Authentication Engine (Fast & Instant Login)
+  // ---------------------------------------------------------------------------
+  var USERS_PRIMARY_CSV_URL = 'https://docs.google.com/spreadsheets/d/1QZ4B2TsrElgQVqUGQwc3dHgODiWRNDrPBGVAiF-td7E/export?format=csv&gid=1374028578&range=A:K';
+  var USERS_FALLBACK_CSV_URL = 'https://docs.google.com/spreadsheets/d/1QZ4B2TsrElgQVqUGQwc3dHgODiWRNDrPBGVAiF-td7E/gviz/tq?tqx=out:csv&gid=1374028578&range=A:K';
+  var USERS_CSV_URL = USERS_PRIMARY_CSV_URL;
+  var DB_NAME = 'FMS_Auth_DB_v1';
+  var DB_VERSION = 1;
+  var STORE_NAME = 'users_store';
+  var dbInstance = null;
+
+  function openAuthDB() {
+    return new Promise(function (resolve, reject) {
+      if (dbInstance) return resolve(dbInstance);
+      if (!window.indexedDB) return reject(new Error('IndexedDB not supported'));
+      var req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = function (e) {
+        var db = e.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME, { keyPath: 'usernameLower' });
+        }
+      };
+      req.onsuccess = function (e) {
+        dbInstance = e.target.result;
+        resolve(dbInstance);
+      };
+      req.onerror = function (e) {
+        reject(e.target.error || new Error('Failed to open IndexedDB ' + DB_NAME));
+      };
+    });
+  }
+
+  function getLocalUser(username) {
+    return openAuthDB().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        try {
+          var key = String(username).trim().toLowerCase();
+          var tx = db.transaction(STORE_NAME, 'readonly');
+          var store = tx.objectStore(STORE_NAME);
+          var req = store.get(key);
+          req.onsuccess = function () { resolve(req.result || null); };
+          req.onerror = function (e) { reject(e.target.error); };
+        } catch (err) {
+          resolve(null);
+        }
+      });
+    }).catch(function () { return null; });
+  }
+
+  function saveUsersToDB(userList) {
+    return openAuthDB().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        try {
+          var tx = db.transaction(STORE_NAME, 'readwrite');
+          var store = tx.objectStore(STORE_NAME);
+          for (var i = 0; i < userList.length; i++) {
+            store.put(userList[i]);
+          }
+          tx.oncomplete = function () { resolve(); };
+          tx.onerror = function (e) { reject(e.target.error); };
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }).catch(function (err) { console.warn('Failed to cache users in IndexedDB:', err); });
+  }
+
+  function parseAccessList(raw) {
+    var text = String(raw == null ? '' : raw).trim();
+    if (!text) return [];
+    return text.split(/[,;\n]+/)
+      .map(function (s) { return s.trim(); })
+      .filter(function (s) { return s !== ''; });
+  }
+
+  function parseCSVRows(csvText) {
+    var rows = [];
+    var curRow = [];
+    var curVal = '';
+    var inQuotes = false;
+    var len = csvText.length;
+
+    for (var i = 0; i < len; i++) {
+      var c = csvText[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (i + 1 < len && csvText[i + 1] === '"') {
+            curVal += '"';
+            i++;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          curVal += c;
+        }
+      } else {
+        if (c === '"') {
+          inQuotes = true;
+        } else if (c === ',') {
+          curRow.push(curVal.trim());
+          curVal = '';
+        } else if (c === '\r') {
+          if (i + 1 < len && csvText[i + 1] === '\n') {
+            i++;
+          }
+          curRow.push(curVal.trim());
+          curVal = '';
+          if (curRow.length > 0) rows.push(curRow);
+          curRow = [];
+        } else if (c === '\n') {
+          curRow.push(curVal.trim());
+          curVal = '';
+          if (curRow.length > 0) rows.push(curRow);
+          curRow = [];
+        } else {
+          curVal += c;
+        }
+      }
+    }
+    if (curVal || curRow.length) {
+      curRow.push(curVal.trim());
+      if (curRow.length > 0) rows.push(curRow);
+    }
+    return rows;
+  }
+
+  function syncUsersFromSheet() {
+    var ts = Date.now();
+    var primaryUrl = USERS_PRIMARY_CSV_URL + '&_ts=' + ts;
+    var fallbackUrl = USERS_FALLBACK_CSV_URL + '&_ts=' + ts;
+    return fetch(primaryUrl, { cache: 'no-cache' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('Failed to fetch primary users sheet: ' + res.status);
+        return res.text();
+      })
+      .then(function (csvText) {
+        if (!csvText || csvText.length < 20) throw new Error('Primary users sheet empty');
+        return csvText;
+      })
+      .catch(function (err) {
+        console.warn('[LoginAuth] Primary users export failed, falling back to GViz:', err);
+        return fetch(fallbackUrl, { cache: 'no-cache' }).then(function (res2) {
+          if (!res2.ok) throw new Error('Failed to fetch fallback users sheet: ' + res2.status);
+          return res2.text();
+        });
+      })
+      .then(function (csvText) {
+        var rows = parseCSVRows(csvText);
+        if (!rows || rows.length < 2) return [];
+        var users = [];
+        // Row 0 is header: USERNAME, PASSWORD, GENDER, TO, CC, STATUS, ... Access, KPI Access, AI Access
+        for (var i = 1; i < rows.length; i++) {
+          var r = rows[i];
+          var uName = (r[0] || '').trim();
+          var uPass = (r[1] || '').trim();
+          if (!uName) continue;
+          users.push({
+            usernameLower: uName.toLowerCase(),
+            username: uName,
+            password: uPass,
+            gender: (r[2] || '').trim(),
+            to: (r[3] || '').trim(),
+            cc: (r[4] || '').trim(),
+            status: (r[5] || '').trim(),
+            access: parseAccessList(r[8]),
+            kpiAccess: parseAccessList(r[9]),
+            aiAccess: parseAccessList(r[10]),
+            updatedAt: Date.now()
+          });
+        }
+        if (users.length > 0) {
+          saveUsersToDB(users);
+        }
+        return users;
+      })
+      .catch(function (err) {
+        console.warn('Silent sync of users from sheet failed:', err);
+        return [];
+      });
+  }
+
+  // Kick off background sync immediately on load
+  try {
+    syncUsersFromSheet();
+  } catch (e) {}
+
+  function showAlert(msg) {
+    alertMsg.textContent = msg;
+    alertBox.classList.remove('visible');
+    void alertBox.offsetWidth;
+    alertBox.classList.add('visible');
+  }
+
+  function hideAlert() { alertBox.classList.remove('visible'); }
+
+  function validate() {
+    var ok = true;
+    if (!usernameEl.value.trim()) { fieldUser.classList.add('has-error'); ok = false; }
+    if (!passwordEl.value.trim()) { fieldPass.classList.add('has-error'); ok = false; }
+    return ok;
+  }
+
+  function setLoading(on) {
+    loginBtn.disabled = on;
+    loginBtn.classList.toggle('loading', on);
+  }
+
+  function jsonp(params, callback) {
+    var cbName = 'lgin_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+    var url = GAS_URL + '?callback=' + cbName;
+    Object.keys(params).forEach(function (k) {
+      url += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(String(params[k]));
+    });
+    var timeout;
+    var script = document.createElement('script');
+    window[cbName] = function (data) {
+      clearTimeout(timeout);
+      try { delete window[cbName]; } catch (e) { window[cbName] = undefined; }
+      if (script.parentNode) script.parentNode.removeChild(script);
+      callback(null, data);
+    };
+    script.onerror = function () {
+      clearTimeout(timeout);
+      try { delete window[cbName]; } catch (e) { window[cbName] = undefined; }
+      if (script.parentNode) script.parentNode.removeChild(script);
+      callback(new Error('Network error — could not reach the server.'));
+    };
+    timeout = setTimeout(function () {
+      try { delete window[cbName]; } catch (e) { window[cbName] = undefined; }
+      if (script.parentNode) script.parentNode.removeChild(script);
+      callback(new Error('Request timed out.'));
+    }, 15000);
+    script.src = url;
+    document.head.appendChild(script);
+  }
+
+  function onLoginSuccess(username, access, kpiAccess, aiAccess) {
+    try {
+      sessionStorage.setItem(SESSION_KEY, username);
+      sessionStorage.setItem(ACCESS_KEY, JSON.stringify(access || []));
+      sessionStorage.setItem(KPI_ACCESS_KEY, JSON.stringify(kpiAccess || []));
+      sessionStorage.setItem(AI_ACCESS_KEY, JSON.stringify(aiAccess || []));
+      if (rememberMe && rememberMe.checked) {
+        localStorage.setItem(SESSION_KEY, username);
+        localStorage.setItem(ACCESS_KEY, JSON.stringify(access || []));
+        localStorage.setItem(KPI_ACCESS_KEY, JSON.stringify(kpiAccess || []));
+        localStorage.setItem(AI_ACCESS_KEY, JSON.stringify(aiAccess || []));
+      } else {
+        localStorage.removeItem(ACCESS_KEY);
+        localStorage.removeItem(KPI_ACCESS_KEY);
+        localStorage.removeItem(AI_ACCESS_KEY);
+      }
+    } catch (e) {}
+    successOvl.classList.add('visible');
+    setTimeout(goToMainPage, 1600);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    hideAlert();
+    if (!validate()) return;
+
+    var username = usernameEl.value.trim();
+    var password = passwordEl.value.trim();
+    var usernameLower = username.toLowerCase();
+    setLoading(true);
+
+    // 1. FAST PATH: Check local IndexedDB first (0-5ms instantaneous validation!)
+    getLocalUser(usernameLower).then(function (cachedUser) {
+      if (cachedUser && cachedUser.password === password) {
+        if (cachedUser.status && /^(INACTIVE|BLOCKED|DEACTIVATED|DISABLED)$/i.test(cachedUser.status.trim())) {
+          setLoading(false);
+          showAlert('Your account is deactivated. Please contact admin.');
+          return;
+        }
+        // User authenticated instantly from IndexedDB!
+        setLoading(false);
+        onLoginSuccess(cachedUser.username || username, cachedUser.access, cachedUser.kpiAccess, cachedUser.aiAccess);
+        // Silently sync latest permissions in background
+        syncUsersFromSheet();
+        return;
+      }
+
+      // 2. SLOW PATH / FALLBACK: If not in local IndexedDB or password changed, fetch live CSV
+      syncUsersFromSheet().then(function (users) {
+        var matched = null;
+        for (var i = 0; i < users.length; i++) {
+          if (users[i].usernameLower === usernameLower) {
+            matched = users[i];
+            break;
+          }
+        }
+
+        if (matched && matched.password === password) {
+          if (matched.status && /^(INACTIVE|BLOCKED|DEACTIVATED|DISABLED)$/i.test(matched.status.trim())) {
+            setLoading(false);
+            showAlert('Your account is deactivated. Please contact admin.');
+            return;
+          }
+          setLoading(false);
+          onLoginSuccess(matched.username || username, matched.access, matched.kpiAccess, matched.aiAccess);
+        } else if (matched && matched.password !== password) {
+          setLoading(false);
+          showAlert('Invalid username or password.');
+        } else {
+          // If still not matched via CSV, fallback to GAS validateLogin
+          if (typeof google !== 'undefined' && google.script && google.script.run) {
+            google.script.run
+              .withSuccessHandler(function (result) {
+                setLoading(false);
+                if (result && result.success) onLoginSuccess(result.username || username, result.access, result.kpiAccess, result.aiAccess);
+                else showAlert((result && result.error) || 'Invalid username or password.');
+              })
+              .withFailureHandler(function (err) { setLoading(false); showAlert(err.message || 'Login failed.'); })
+              .validateLogin(username, password);
+          } else {
+            jsonp({ action: 'validateLogin', username: username, password: password }, function (err, result) {
+              setLoading(false);
+              if (err) { showAlert('Invalid username or password.'); return; }
+              if (result && result.success) onLoginSuccess(result.username || username, result.access, result.kpiAccess, result.aiAccess);
+              else showAlert((result && result.error) || 'Invalid username or password.');
+            });
+          }
+        }
+      }).catch(function () {
+        // Fallback to GAS if network fetch fails
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          google.script.run
+            .withSuccessHandler(function (result) {
+              setLoading(false);
+              if (result && result.success) onLoginSuccess(result.username || username, result.access, result.kpiAccess, result.aiAccess);
+              else showAlert((result && result.error) || 'Invalid username or password.');
+            })
+            .withFailureHandler(function (err) { setLoading(false); showAlert(err.message || 'Login failed.'); })
+            .validateLogin(username, password);
+        } else {
+          jsonp({ action: 'validateLogin', username: username, password: password }, function (err, result) {
+            setLoading(false);
+            if (err) { showAlert(err.message); return; }
+            if (result && result.success) onLoginSuccess(result.username || username, result.access, result.kpiAccess, result.aiAccess);
+            else showAlert((result && result.error) || 'Invalid username or password.');
+          });
+        }
+      });
+    }).catch(function (err) {
+      // IndexedDB lookup error fallback
+      jsonp({ action: 'validateLogin', username: username, password: password }, function (err2, result) {
+        setLoading(false);
+        if (err2) { showAlert('Login failed.'); return; }
+        if (result && result.success) onLoginSuccess(result.username || username, result.access, result.kpiAccess, result.aiAccess);
+        else showAlert((result && result.error) || 'Invalid username or password.');
+      });
+    });
+  });
+
+  [usernameEl, passwordEl].forEach(function (el) {
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); form.dispatchEvent(new Event('submit')); }
+    });
+  });
+
+  // Also read from localStorage on load (remember me)
+  try {
+    var lsUser = localStorage.getItem(SESSION_KEY);
+    if (lsUser) {
+      sessionStorage.setItem(SESSION_KEY, lsUser);
+      var lsAccess = localStorage.getItem(ACCESS_KEY);
+      if (lsAccess) sessionStorage.setItem(ACCESS_KEY, lsAccess);
+      var lsKpiAccess = localStorage.getItem(KPI_ACCESS_KEY);
+      if (lsKpiAccess) sessionStorage.setItem(KPI_ACCESS_KEY, lsKpiAccess);
+      var lsAiAccess = localStorage.getItem(AI_ACCESS_KEY);
+      if (lsAiAccess) sessionStorage.setItem(AI_ACCESS_KEY, lsAiAccess);
+      goToMainPage();
+    }
+  } catch (e) {}
+
+})();
+</script>
+
+</body>
+</html>
