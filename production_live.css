@@ -1,0 +1,1537 @@
+/**
+ * =============================================================================
+ * Production Live - Live Broadcast & Shopfloor Telemetry Styles
+ * =============================================================================
+ * Executive industrial telemetry feed for batches pending ERP Issue Date
+ * Strictly zero border-radius (corner/architectural shapes only)
+ * High-precision typography hierarchy:
+ *   - 'Space Grotesk': Technical data, batch codes, counts, metrics & percentages
+ *   - 'Montserrat': Authoritative headers, labels, ribbons, buttons & tabs
+ *   - 'Manrope': High-legibility modern body copy, callout descriptions & tables
+ * =============================================================================
+ */
+
+:root {
+  --prod-font-mono: 'Space Grotesk', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --prod-font-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --prod-font-body: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* =============================================================================
+   0. UNIVERSAL CORNER ENFORCEMENT FOR PRODUCTION LIVE VIEW
+   Strictly zero roundness across all subview children
+   ============================================================================= */
+#batch-list-production-live-view,
+#batch-list-production-live-view *,
+#batch-list-production-live-view *::before,
+#batch-list-production-live-view *::after,
+.kpi-card-production-live,
+.kpi-card-production-live *,
+#prod-live-toast {
+  border-radius: 0 !important;
+}
+
+/* =============================================================================
+   0.1 FULLSCREEN VIEWPORT & INTERNAL SCROLLING MANAGEMENT
+   ============================================================================= */
+#page-batch-list[style*="display: none"],
+#page-batch-list[style*="display:none"],
+.page-view[style*="display: none"],
+.page-view[style*="display:none"],
+#batch-list-production-live-view[style*="display: none"],
+#batch-list-production-live-view[style*="display:none"] {
+  display: none !important;
+}
+
+.content-area.prod-live-active {
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: calc(100vh - 60px) !important;
+  max-height: calc(100vh - 60px) !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+#page-batch-list.prod-live-active:not([style*="display: none"]):not([style*="display:none"]) {
+  flex: 1 1 0px !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#batch-list-production-live-view:not([style*="display: none"]):not([style*="display:none"]) {
+  flex: 1 1 0px !important;
+  min-height: 0 !important;
+  height: calc(100vh - 60px) !important;
+  max-height: calc(100vh - 60px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+/* -----------------------------------------------------------------------------
+   1. KPI Card in Production Data Grid
+   ----------------------------------------------------------------------------- */
+.kpi-card-production-live {
+  border-left: 4px solid #ef4444 !important;
+  border-top: 1px solid #e2e8f0 !important;
+  border-right: 1px solid #e2e8f0 !important;
+  border-bottom: 1px solid #cbd5e1 !important;
+  background: linear-gradient(135deg, #ffffff 0%, #fff1f2 100%) !important;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kpi-card-production-live:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.22), 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+  border-left-color: #dc2626 !important;
+}
+
+.kpi-card-production-live .kpi-card-title {
+  font-family: var(--prod-font-heading) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.2px !important;
+  font-size: 12px !important;
+  white-space: normal !important;
+  line-height: 1.2 !important;
+}
+
+.kpi-card-production-live .kpi-card-value {
+  font-family: var(--prod-font-mono) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.5px !important;
+}
+
+.kpi-icon-red {
+  background: #fee2e2 !important;
+  color: #ef4444 !important;
+  border: 1px solid #fca5a5 !important;
+  border-radius: 0 !important;
+  position: relative;
+}
+
+/* Square LED pulse indicator in Production Data overview */
+.prod-live-pulse-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 0 !important;
+  background: #ef4444;
+  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  animation: prodLivePulseSquare 1.8s infinite;
+}
+
+@keyframes prodLivePulseSquare {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.85);
+  }
+  70% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.kpi-card-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prod-live-badge-top-wrap {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.prod-live-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #dc2626;
+  color: #ffffff;
+  font-family: var(--prod-font-heading);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  padding: 2px 7px;
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  line-height: 1.2;
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.35);
+  border: 1px solid #b91c1c;
+}
+
+/* -----------------------------------------------------------------------------
+   1.5. Master Frozen Header Container (Topbar + Ticker + KPI + Controls)
+   ----------------------------------------------------------------------------- */
+.prod-live-sticky-header {
+  position: relative !important;
+  top: 0 !important;
+  z-index: 20 !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  border-bottom: 1px solid #cbd5e1 !important;
+  border-radius: 0 !important;
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
+  width: 100% !important;
+}
+
+/* -----------------------------------------------------------------------------
+   2. Subview Topbar & Header Banner
+   ----------------------------------------------------------------------------- */
+.prod-live-topbar {
+  background: #090e17 !important;
+  color: #f8fafc !important;
+  padding: 12px 20px;
+  border-bottom: 2px solid #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  border-radius: 0 !important;
+}
+
+.prod-live-topbar-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f8fafc;
+  font-family: var(--prod-font-heading);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+/* Square LED radar pulse badge */
+.prod-live-pulse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #10b981;
+  font-family: var(--prod-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.25s ease;
+}
+
+.prod-live-radar-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 0 !important;
+  background: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8);
+  animation: prodLiveRadarSquare 2s infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@keyframes prodLiveRadarSquare {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.85);
+  }
+  70% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.prod-live-pulse-badge.prod-live-heartbeat-active {
+  background: rgba(16, 185, 129, 0.28) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.prod-live-pulse-badge.prod-live-heartbeat-active .prod-live-radar-dot {
+  background: #34d399;
+  animation: prodLiveRadarFastSquare 0.5s infinite;
+}
+
+@keyframes prodLiveRadarFastSquare {
+  0% { transform: scale(0.85); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.9); }
+  50% { transform: scale(1.25); box-shadow: 0 0 0 7px rgba(52, 211, 153, 0); }
+  100% { transform: scale(0.85); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+
+#prod-live-top-count {
+  font-family: var(--prod-font-mono);
+  font-size: 11.5px;
+  color: #94a3b8;
+  letter-spacing: 0.3px;
+}
+
+.prod-live-btn-back {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid #475569 !important;
+  font-family: var(--prod-font-heading) !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  padding: 7px 14px !important;
+  border-radius: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.prod-live-btn-back:hover {
+  background: #334155 !important;
+  border-color: #94a3b8 !important;
+  color: #ffffff !important;
+}
+
+.prod-live-top-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.prod-live-btn-action {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  padding: 6px 13px;
+  font-family: var(--prod-font-heading);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.prod-live-btn-action:hover {
+  background: #334155;
+  border-color: #94a3b8;
+}
+
+.prod-live-btn-action--primary {
+  background: #dc2626;
+  border-color: #b91c1c;
+  color: #ffffff;
+}
+
+.prod-live-btn-action--primary:hover {
+  background: #b91c1c;
+  border-color: #991b1b;
+}
+
+.prod-live-view-switch {
+  display: inline-flex;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 0 !important;
+  padding: 2px;
+  gap: 2px;
+}
+
+.prod-live-view-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  padding: 5px 11px;
+  font-family: var(--prod-font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 0 !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.prod-live-view-btn:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.prod-live-view-btn.is-active {
+  background: #ef4444;
+  color: #ffffff;
+  border-radius: 0 !important;
+}
+
+/* -----------------------------------------------------------------------------
+   3. Breaking News Ticker Bar
+   ----------------------------------------------------------------------------- */
+.prod-live-ticker-wrap {
+  background: linear-gradient(90deg, #130a0e 0%, #0c121e 100%);
+  border-bottom: 1px solid #2d1822;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  border-radius: 0 !important;
+}
+
+.prod-live-ticker-badge {
+  background: #dc2626;
+  color: #ffffff;
+  font-family: var(--prod-font-heading);
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 0 !important;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(220, 38, 38, 0.45);
+  border: 1px solid #b91c1c;
+}
+
+.prod-live-ticker-content {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--prod-font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.prod-live-ticker-text {
+  display: inline-block;
+  animation: prodLiveTickerAnim 26s linear infinite;
+  padding-left: 20px;
+}
+
+.prod-live-ticker-wrap:hover .prod-live-ticker-text {
+  animation-play-state: paused;
+}
+
+@keyframes prodLiveTickerAnim {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+/* -----------------------------------------------------------------------------
+   4. Hero KPI Scoreboard (6 Category Readiness Brackets)
+   ----------------------------------------------------------------------------- */
+.prod-live-kpi-scoreboard {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px 18px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 0 !important;
+}
+
+@media (max-width: 1400px) {
+  .prod-live-kpi-scoreboard {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .prod-live-kpi-scoreboard {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .prod-live-kpi-scoreboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+.prod-live-kpi-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 0 !important;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  position: relative;
+  min-height: 64px;
+}
+
+.prod-live-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  border-color: #94a3b8;
+}
+
+/* Accent top border strips per bracket */
+.prod-live-kpi-card[data-channel="all"] { border-top: 3px solid #64748b; }
+.prod-live-kpi-card[data-channel="r91_100"] { border-top: 3px solid #10b981; }
+.prod-live-kpi-card[data-channel="r81_90"] { border-top: 3px solid #0d9488; }
+.prod-live-kpi-card[data-channel="r71_80"] { border-top: 3px solid #f59e0b; }
+.prod-live-kpi-card[data-channel="r61_70"] { border-top: 3px solid #ea580c; }
+.prod-live-kpi-card[data-channel="r0_60"] { border-top: 3px solid #ef4444; }
+
+.prod-live-kpi-card.is-active {
+  border-color: #0f172a !important;
+  box-shadow: 0 0 0 2px #0f172a, 0 6px 14px rgba(15, 23, 42, 0.14) !important;
+  background: #ffffff !important;
+}
+
+.prod-live-kpi-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.prod-live-kpi-icon-wrap--slate { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+.prod-live-kpi-icon-wrap--red { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
+.prod-live-kpi-icon-wrap--green { background: #dcfce7; color: #10b981; border-color: #86efac; }
+.prod-live-kpi-icon-wrap--teal { background: #ccfbf1; color: #0d9488; border-color: #99f6e4; }
+.prod-live-kpi-icon-wrap--amber { background: #fef3c7; color: #f59e0b; border-color: #fde68a; }
+.prod-live-kpi-icon-wrap--orange { background: #ffedd5; color: #ea580c; border-color: #fed7aa; }
+.prod-live-kpi-icon-wrap--blue { background: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
+.prod-live-kpi-icon-wrap--purple { background: #f3e8ff; color: #9333ea; border-color: #e9d5ff; }
+
+.prod-live-kpi-content {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.prod-live-kpi-lbl {
+  font-family: var(--prod-font-heading);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #1e293b;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.prod-live-kpi-sub {
+  font-family: var(--prod-font-body);
+  font-size: 9px;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.2px;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.prod-live-kpi-val {
+  font-family: var(--prod-font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -1px;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding-left: 4px;
+  color: #0f172a;
+}
+
+/* -----------------------------------------------------------------------------
+   5. News Wire Controls (Search & Channels Bar)
+   ----------------------------------------------------------------------------- */
+.prod-live-controls-bar {
+  padding: 12px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  border-radius: 0 !important;
+}
+
+.prod-live-controls-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 280px;
+  max-width: 650px;
+}
+
+.prod-live-search-box {
+  position: relative;
+  min-width: 180px;
+  flex: 1;
+}
+
+/* Category Filter Dropdown */
+.prod-live-cat-dropdown-wrap {
+  position: relative;
+  display: inline-block;
+  user-select: none;
+}
+
+.prod-live-cat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 35px;
+  padding: 0 12px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 0 !important;
+  color: #1e293b;
+  font-family: var(--prod-font-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.prod-live-cat-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.prod-live-cat-btn.is-active-filter {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+
+.prod-live-cat-btn-icon {
+  font-size: 18px;
+  color: #475569;
+}
+
+.prod-live-cat-btn.is-active-filter .prod-live-cat-btn-icon {
+  color: #2563eb;
+}
+
+.prod-live-cat-btn-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #e2e8f0;
+  color: #334155;
+  border-radius: 10px;
+}
+
+.prod-live-cat-btn.is-active-filter .prod-live-cat-btn-count {
+  background: #bfdbfe;
+  color: #1e40af;
+}
+
+.prod-live-cat-btn-arrow {
+  font-size: 18px;
+  color: #64748b;
+  transition: transform 0.2s ease;
+}
+
+.prod-live-cat-btn.is-open .prod-live-cat-btn-arrow {
+  transform: rotate(180deg);
+}
+
+.prod-live-cat-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1050;
+  min-width: 260px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+  padding: 6px 0;
+}
+
+.prod-live-cat-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px 8px 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.prod-live-cat-menu-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+}
+
+.prod-live-cat-all-btn {
+  background: transparent;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563eb;
+  cursor: pointer;
+  padding: 0;
+}
+
+.prod-live-cat-all-btn:hover {
+  text-decoration: underline;
+}
+
+.prod-live-cat-menu-list {
+  padding: 4px 0;
+}
+
+.prod-live-cat-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  font-size: 13px;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.prod-live-cat-menu-item:hover {
+  background: #f8fafc;
+}
+
+.prod-live-cat-check {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  accent-color: #2563eb;
+}
+
+.prod-live-cat-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  letter-spacing: 0.3px;
+  border-radius: 0 !important;
+}
+
+.prod-live-cat-badge--hb {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.prod-live-cat-badge--slg {
+  background: #f5f3ff;
+  color: #6d28d9;
+  border: 1px solid #ddd6fe;
+}
+
+.prod-live-cat-item-text {
+  flex: 1;
+}
+
+.prod-live-cat-item-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.prod-live-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.prod-live-search-input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: 0 !important;
+  background: #f8fafc;
+  font-family: var(--prod-font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.prod-live-search-input:focus {
+  border-color: #0f172a;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.15);
+}
+
+.prod-live-channels-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.prod-live-channel-tab {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  font-family: var(--prod-font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 6px 11px;
+  border-radius: 0 !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.prod-live-channel-tab:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+.prod-live-channel-tab.is-active {
+  background: #0f172a !important;
+  border-color: #0f172a !important;
+  color: #ffffff !important;
+}
+
+.prod-live-tab-badge {
+  font-family: var(--prod-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 0 !important;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.prod-live-channel-tab.is-active .prod-live-tab-badge {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.prod-live-sort-select {
+  padding: 7px 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 0 !important;
+  font-family: var(--prod-font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #1e293b;
+  background: #f8fafc;
+  outline: none;
+  cursor: pointer;
+}
+
+.prod-live-sort-select:focus {
+  border-color: #0f172a;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.12);
+}
+
+/* -----------------------------------------------------------------------------
+   6. News Bulletin Cards ("jerokom news dekhano hoy serokom")
+   ----------------------------------------------------------------------------- */
+.prod-live-container {
+  flex: 1 1 0px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  padding: 16px 20px 32px !important;
+  background: #f1f5f9 !important;
+  box-sizing: border-box !important;
+  border-radius: 0 !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #dc2626 #0b1120 !important;
+}
+
+/* Universal Narrow Scrollbars for Production Live Feed, Tables & Drawers (Sleek 5px Industrial Red & Slate) */
+#batch-list-production-live-view *::-webkit-scrollbar,
+.prod-live-container::-webkit-scrollbar,
+.prod-live-table-wrapper::-webkit-scrollbar,
+.prod-live-drawer-content::-webkit-scrollbar {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+#batch-list-production-live-view *::-webkit-scrollbar-track,
+.prod-live-container::-webkit-scrollbar-track,
+.prod-live-table-wrapper::-webkit-scrollbar-track,
+.prod-live-drawer-content::-webkit-scrollbar-track {
+  background: #0b1120 !important;
+  border-radius: 0 !important;
+}
+
+#batch-list-production-live-view *::-webkit-scrollbar-thumb,
+.prod-live-container::-webkit-scrollbar-thumb,
+.prod-live-table-wrapper::-webkit-scrollbar-thumb,
+.prod-live-drawer-content::-webkit-scrollbar-thumb {
+  background: #dc2626 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 4px rgba(220, 38, 38, 0.6) !important;
+}
+
+#batch-list-production-live-view *::-webkit-scrollbar-thumb:hover,
+.prod-live-container::-webkit-scrollbar-thumb:hover,
+.prod-live-table-wrapper::-webkit-scrollbar-thumb:hover,
+.prod-live-drawer-content::-webkit-scrollbar-thumb:hover {
+  background: #ef4444 !important;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.85) !important;
+}
+
+#batch-list-production-live-view *::-webkit-scrollbar-thumb:active,
+.prod-live-container::-webkit-scrollbar-thumb:active,
+.prod-live-table-wrapper::-webkit-scrollbar-thumb:active,
+.prod-live-drawer-content::-webkit-scrollbar-thumb:active {
+  background: #b91c1c !important;
+}
+
+#batch-list-production-live-view *,
+.prod-live-container,
+.prod-live-table-wrapper,
+.prod-live-drawer-content {
+  scrollbar-width: thin !important;
+  scrollbar-color: #dc2626 #0b1120 !important;
+}
+
+.prod-live-news-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.prod-live-card {
+  background: #ffffff;
+  border-radius: 0 !important;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.prod-live-card:hover {
+  box-shadow: 0 8px 20px -3px rgba(0, 0, 0, 0.09);
+  border-color: #94a3b8;
+}
+
+.prod-live-card--ready {
+  border-top: 4px solid #10b981;
+}
+
+.prod-live-card--cond {
+  border-top: 4px solid #f59e0b;
+}
+
+.prod-live-card--hold {
+  border-top: 4px solid #ef4444;
+}
+
+/* Card Wire Header */
+.prod-live-card-wire {
+  padding: 10px 18px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-radius: 0 !important;
+}
+
+.prod-live-ribbon {
+  font-family: var(--prod-font-heading);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  padding: 3px 10px;
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.prod-live-ribbon--ready {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.prod-live-ribbon--cond {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.prod-live-ribbon--hold {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.prod-live-wire-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--prod-font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.prod-live-tag-erp {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  padding: 2px 8px;
+  border-radius: 0 !important;
+  font-family: var(--prod-font-heading);
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+/* Card Main Headline & Lead Body */
+.prod-live-card-main {
+  padding: 16px 20px;
+}
+
+.prod-live-headline-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.prod-live-headline {
+  font-family: var(--prod-font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prod-live-btn-copy-batch {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  cursor: pointer;
+  padding: 2px 7px;
+  border-radius: 0 !important;
+  font-family: var(--prod-font-heading);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.15s ease;
+}
+
+.prod-live-btn-copy-batch:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+/* Metadata Chips Row */
+.prod-live-meta-grid {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.prod-live-chip {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 5px 10px;
+  border-radius: 0 !important;
+  font-family: var(--prod-font-body);
+  font-size: 12px;
+  color: #475569;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prod-live-chip strong {
+  font-family: var(--prod-font-mono);
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.prod-live-chip--qty {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1e40af;
+  font-weight: 700;
+}
+
+/* Readiness Meter & Linear Industrial Bar */
+.prod-live-readiness-row {
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 0 !important;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.prod-live-gauge-box {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.prod-live-gauge-num {
+  font-family: var(--prod-font-mono);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.prod-live-gauge-num--ready { color: #10b981; }
+.prod-live-gauge-num--cond { color: #f59e0b; }
+.prod-live-gauge-num--hold { color: #ef4444; }
+
+.prod-live-gauge-unit {
+  font-family: var(--prod-font-heading);
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+}
+
+.prod-live-meter-col {
+  flex: 1;
+  min-width: 220px;
+}
+
+.prod-live-bar-track {
+  width: 100%;
+  height: 10px;
+  background: #e2e8f0;
+  border: 1px solid #cbd5e1;
+  border-radius: 0 !important;
+  overflow: hidden;
+  position: relative;
+}
+
+.prod-live-bar-fill {
+  height: 100%;
+  border-radius: 0 !important;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.prod-live-bar-fill--ready { background: #10b981; }
+.prod-live-bar-fill--cond { background: #f59e0b; }
+.prod-live-bar-fill--hold { background: #ef4444; }
+
+.prod-live-counts-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.prod-live-stat-badge {
+  font-family: var(--prod-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 0 !important;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.prod-live-stat-badge--ready { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+.prod-live-stat-badge--pending { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+.prod-live-stat-badge--total { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+
+/* Editorial Bottleneck Alert Callout Box */
+.prod-live-bottleneck-box {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 0 !important;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.prod-live-bottleneck-box--alert {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-left: 4px solid #ef4444;
+  color: #881337;
+}
+
+.prod-live-bottleneck-box--success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 4px solid #10b981;
+  color: #14532d;
+}
+
+.prod-live-bottleneck-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.prod-live-bottleneck-title {
+  font-family: var(--prod-font-heading);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.prod-live-bottleneck-desc {
+  font-family: var(--prod-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+/* Expandable Component Drawer */
+.prod-live-drawer-toggle {
+  margin-top: 14px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+  width: 100%;
+  padding: 8px 14px;
+  font-family: var(--prod-font-heading);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-radius: 0 !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+}
+
+.prod-live-drawer-toggle:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.prod-live-drawer-chevron {
+  transition: transform 0.2s ease;
+}
+
+.prod-live-drawer-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.prod-live-drawer-content {
+  margin-top: 0;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-top: none;
+  border-radius: 0 !important;
+  overflow-x: auto;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.prod-live-table-comp {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+
+.prod-live-table-comp th {
+  background: #0f172a;
+  color: #f8fafc;
+  font-family: var(--prod-font-heading);
+  font-weight: 700;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 7px 12px;
+  text-align: left;
+  border-bottom: 1px solid #334155;
+  white-space: nowrap;
+}
+
+.prod-live-table-comp td {
+  padding: 7px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  font-family: var(--prod-font-body);
+  vertical-align: middle;
+}
+
+.prod-live-table-comp td:nth-child(1),
+.prod-live-table-comp td:nth-child(3),
+.prod-live-table-comp td:nth-child(4) {
+  font-family: var(--prod-font-mono);
+}
+
+.prod-live-table-comp tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Card Actions Footer */
+.prod-live-card-actions {
+  padding: 10px 18px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-radius: 0 !important;
+}
+
+.prod-live-btn-wire {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 6px 12px;
+  font-family: var(--prod-font-heading);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-radius: 0 !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.prod-live-btn-wire:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.prod-live-btn-wire--ai {
+  background: #1e1b4b;
+  border-color: #4338ca;
+  color: #e0e7ff;
+}
+
+.prod-live-btn-wire--ai:hover {
+  background: #312e81;
+  border-color: #6366f1;
+  color: #ffffff;
+}
+
+/* -----------------------------------------------------------------------------
+   7. Grid View Mode (Compact Architectural Cards)
+   ----------------------------------------------------------------------------- */
+.prod-live-grid-mode {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+}
+
+/* -----------------------------------------------------------------------------
+   8. Table View Mode (Executive Data Table)
+   ----------------------------------------------------------------------------- */
+.prod-live-table-wrapper {
+  background: #ffffff;
+  border-radius: 0 !important;
+  border: 1px solid #cbd5e1;
+  overflow: auto;
+  max-height: calc(100vh - 280px);
+}
+
+.prod-live-main-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.prod-live-main-table th {
+  background: #0f172a;
+  color: #f8fafc;
+  font-family: var(--prod-font-heading);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 9px 12px;
+  text-align: left;
+  border-bottom: 2px solid #334155;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.prod-live-main-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  font-family: var(--prod-font-body);
+  vertical-align: middle;
+}
+
+.prod-live-main-table td:nth-child(1),
+.prod-live-main-table td:nth-child(2),
+.prod-live-main-table td:nth-child(4),
+.prod-live-main-table td:nth-child(5),
+.prod-live-main-table td:nth-child(6),
+.prod-live-main-table td:nth-child(7),
+.prod-live-main-table td:nth-child(8),
+.prod-live-main-table td:nth-child(9),
+.prod-live-main-table td:nth-child(10) {
+  font-family: var(--prod-font-mono);
+}
+
+.prod-live-main-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* -----------------------------------------------------------------------------
+   9. Geometric Square Loader & Empty State
+   ----------------------------------------------------------------------------- */
+.prod-live-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: #64748b;
+  font-family: var(--prod-font-body);
+  border-radius: 0 !important;
+}
+
+.prod-live-empty-icon {
+  font-size: 48px;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+.prod-live-empty-title {
+  font-family: var(--prod-font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0f172a;
+}
+
+/* Sharp geometric rotating loader */
+.prod-live-spin {
+  animation: prodLiveSpinSquare 1.2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+  border-radius: 0 !important;
+}
+
+@keyframes prodLiveSpinSquare {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Standalone Toast */
+#prod-live-toast {
+  border-radius: 0 !important;
+  font-family: var(--prod-font-heading);
+  letter-spacing: 0.3px;
+}
